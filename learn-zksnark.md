@@ -110,13 +110,13 @@ snarkjs generateverifier --verificationkey verification_key.json --verifier veri
 
 *Nullifier = HASH(spending key, rho)*
 
-zkSNARK在这里起的作用是，在不暴露```rho```的情况下，证明存在一个与之对应的```Commitment```并且不存在一个与之冲突的```Nullifier```。
+zkSNARK在这里起的作用是，在不暴露```rho```的情况下，证明存在一个与之对应的```Commitment```并且不存在一个与之冲突的```Nullifier```。不难看出，我们在电路中需要求hash。我们把适合SNARK的哈希算法叫```SFH``` (SNARK-friendly hash)。SFH是专门为SNARK而设计的哈希算法，比传统哈希算法拥有更低的乘法复杂度，常见的SFH有 MiMC/Poseidon等.
 
 这里主要用到的是zkSNARK的隐私能力。推荐阅读[Zcash](https://z.cash/technology/zksnarks/)
 
 ### Filecoin
 
-对于每一个challenge，lotus要求证明者构造出从data node到merkel tree root的每一步计算过程，并且最终得到已经保存在链上的root值。这里data node就是证明者的private input，而链上的root值则是电路最后的output。而电路的构造保证了计算过程的正确性和真实性。
+对于每一个challenge，lotus要求证明者构造出从data node（32 bytes）到merkel tree root的每一步计算过程，并且最终得到已经保存在链上的root值。这里data node就是证明者的private input，而链上的root值则是电路最后的output。而电路的构造保证了计算过程的正确性和真实性。
 
 值得一提的是，lotus的电路规模已经达到了1亿，生成proof非常耗时，但是验证依然非常快。
 推荐阅读[Filecoin — How storage replication is proved using zk-SNARK?](https://starli.medium.com/filecoin-how-storage-replication-is-proved-using-zk-snark-8a2a06b1c582)
